@@ -1,0 +1,35 @@
+name: Python application
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Ubuntu işletim sistemi kullanılıyor
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # Kodu çekme
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # Python 3.9 kullanmak
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv  # Sanal ortam oluşturma
+        . venv/bin/activate  # Sanal ortamı aktifleştirme (Ubuntu için doğru komut)
+        pip install --upgrade pip  # Pip'i güncelle
+        pip install -r requirements.txt  # Bağımlılıkları yükle
+
+    - name: Run tests
+      run: |
+        . venv/bin/activate  # Sanal ortamı aktifleştirme
+        pytest  # Testleri çalıştır
+
