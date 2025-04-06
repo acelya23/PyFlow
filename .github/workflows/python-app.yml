@@ -1,0 +1,33 @@
+name: Python application
+
+on:
+  push:
+    branches:
+      - main  # Ana branch (main) için tetikleme
+  pull_request:
+    branches:
+      - main  # Pull request'ler için tetikleme
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # İşlemci olarak Ubuntu kullanıyoruz
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # Kodu çekme
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # Python sürümünü belirtin
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt  # Gerekli bağımlılıkları yükle
+
+    - name: Run tests
+      run: |
+        source venv/bin/activate
+        pytest  # Testleri çalıştır
